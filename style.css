@@ -2,51 +2,40 @@
 
 /* General body styling */
 body {
-    color: #00ff00; /* Bright green text */
-    background-color: #000000; /* Black background */
+    color: #333; /* Dark gray text */
+    background-color: #f5f5f5; /* Light gray background */
 }
 
 /* Main title styling */
-.stApp > header {
-    background-color: transparent;
-}
-
 h1 {
-    color: #00ff00; /* Bright green for main title */
-    text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00;
+    color: #333;
 }
 
 /* Sidebar styling */
 .css-1d391kg {
-    background-color: #0a0a0a; /* Slightly lighter black for sidebar */
-    border-right: 1px solid #00ff00; /* Green border */
-}
-
-.css-1d391kg .stSelectbox [data-baseweb="select"] > div {
-    background-color: #1a1a1a; /* Darker background for select box */
-    color: #00ff00; /* Green text */
+    background-color: #fff; /* White background for sidebar */
+    border-right: 1px solid #ddd; /* Light gray border */
 }
 
 /* Button styling */
 .stButton>button {
-    color: #000000; /* Black text */
-    background-color: #00ff00; /* Green background */
-    border: 1px solid #00ff00; /* Green border */
+    color: #fff; /* White text */
+    background-color: #007bff; /* Blue background */
+    border: 1px solid #007bff; /* Blue border */
     border-radius: 5px;
-    box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
 }
 
 /* Chat input styling */
 .stTextInput>div>div>input {
-    color: #00ff00; /* Green text */
-    background-color: #1a1a1a; /* Dark background */
-    border: 1px solid #00ff00; /* Green border */
+    color: #333; /* Dark gray text */
+    background-color: #fff; /* White background */
+    border: 1px solid #ddd; /* Light gray border */
 }
 
 /* Chat message styling */
 .stChatMessage {
-    background-color: #1a1a1a; /* Dark background for chat messages */
-    border: 1px solid #00ff00; /* Green border */
+    background-color: #fff; /* White background for chat messages */
+    border: 1px solid #ddd; /* Light gray border */
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 10px;
