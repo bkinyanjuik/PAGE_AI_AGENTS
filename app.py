@@ -1,8 +1,20 @@
 import streamlit as st
-from page_ai_crew import page_ai_crew, llm
-from crewai import Task
+from page_ai_crew import page_ai_crew
+from crewai import Task, Crew
+import logging
+from io import StringIO
+
+# Set up logging
+log_stream = StringIO()
+logging.basicConfig(stream=log_stream, level=logging.INFO)
 
 st.set_page_config(page_title="PAGE AI", layout="wide")
+
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+local_css("style.css")
 
 st.title("PAGE AI Agent Management")
 
@@ -35,9 +47,14 @@ if prompt := st.chat_input("What is up?"):
     # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
 
-    # Get response from the agent
+    # Create a temporary crew to execute the task
     task = Task(description=prompt, agent=selected_agent, expected_output="A helpful response.")
-    response = task.execute()
+    temp_crew = Crew(
+        agents=[selected_agent],
+        tasks=[task],
+        verbose=2
+    )
+    response = temp_crew.kickoff()
 
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
@@ -52,3 +69,9 @@ if st.sidebar.button("Run Crew"):
         result = page_ai_crew.kickoff()
         st.sidebar.success("Crew run finished.")
         st.sidebar.write(result)
+
+# Logs section
+st.sidebar.title("Logs")
+logs_container = st.sidebar.container()
+log_stream.seek(0)
+logs_container.text(log_stream.read())
