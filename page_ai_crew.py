@@ -12,7 +12,7 @@ load_dotenv()
 # Initialize the language model with the Groq API key for general tasks.
 llm = ChatGroq(
     api_key=os.environ.get("GROQ_API_KEY"),
-    model_name="llama3-70b-8192"
+    model="groq/llama3-70b-8192"
 )
 
 # Initialize the language model with the OpenRouter API key for the coding agent.
