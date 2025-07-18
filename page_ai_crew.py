@@ -1,25 +1,18 @@
 import os
 from crewai import Agent, Task, Crew, Process
-from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 
 load_dotenv()
 
 # -------------------------
-# Set up the language models
+# Set up the language model
 # -------------------------
-# Initialize the language model with the Groq API key for general tasks.
-llm = ChatGroq(
-    api_key=os.environ.get("GROQ_API_KEY"),
-    model="groq/llama3-70b-8192"
-)
-
-# Initialize the language model with the OpenRouter API key for the coding agent.
-openrouter_llm = ChatOpenAI(
+# Initialize the language model with the OpenRouter API key.
+llm = ChatOpenAI(
     api_key=os.environ.get("OPENROUTER_API_KEY"),
     base_url="https://openrouter.ai/api/v1",
-    model="deepseek/deepseek-coder-33b-instruct",
+    model="deepseek/deepseek-v3-base",
 )
 
 # -------------------------
@@ -74,7 +67,7 @@ code_builder = Agent(
         "frontend interfaces, you are the architect and builder of the PAGE AI platform. You are proficient in multiple "
         "programming languages and dedicated to writing clean, scalable, and well-documented code."
     ),
-    llm=openrouter_llm,
+    llm=llm,
     verbose=True
 )
 
@@ -392,8 +385,8 @@ if __name__ == "__main__":
 # 4. **Add Environment Variables:**
 #    - Click on the "Environment" tab.
 #    - Add a new environment variable:
-#      - **Key:** `GROQ_API_KEY`
-#      - **Value:** Your actual Groq API key.
+#      - **Key:** `OPENROUTER_API_KEY`
+#      - **Value:** Your actual OpenRouter API key.
 #    - **Note:** It's recommended to use Render's "Secret Files" for sensitive keys.
 #
 # 5. **Deploy:**
