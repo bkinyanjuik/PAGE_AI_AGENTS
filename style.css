@@ -2,41 +2,80 @@
 
 /* General body styling */
 body {
-    color: #333; /* Dark gray text */
-    background-color: #f5f5f5; /* Light gray background */
+    background: #0f0c29;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
 }
 
-/* Main title styling */
-h1 {
-    color: #333;
+/* Glass morphism card effect */
+.glass-morphism {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    margin-bottom: 20px;
 }
 
-/* Sidebar styling */
-.css-1d391kg {
-    background-color: #fff; /* White background for sidebar */
-    border-right: 1px solid #ddd; /* Light gray border */
+/* Gradient text */
+.gradient-text {
+    background: -webkit-linear-gradient(#00ffff, #007bff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-/* Button styling */
-.stButton>button {
-    color: #fff; /* White text */
-    background-color: #007bff; /* Blue background */
-    border: 1px solid #007bff; /* Blue border */
-    border-radius: 5px;
+/* Agent card styling */
+.agent-card {
+    transition: transform 0.3s;
+}
+.agent-card:hover {
+    transform: translateY(-10px);
 }
 
-/* Chat input styling */
-.stTextInput>div>div>input {
-    color: #333; /* Dark gray text */
-    background-color: #fff; /* White background */
-    border: 1px solid #ddd; /* Light gray border */
+/* Status indicator */
+.status-indicator {
+    height: 10px;
+    width: 10px;
+    background-color: #00ff00; /* Green for online */
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 10px;
 }
 
-/* Chat message styling */
-.stChatMessage {
-    background-color: #fff; /* White background for chat messages */
-    border: 1px solid #ddd; /* Light gray border */
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 10px;
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+::-webkit-scrollbar-thumb {
+    background: #007bff;
+    border-radius: 8px;
+}
+
+/* Floating particles container */
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .glass-morphism {
+        padding: 15px;
+    }
+    h1 {
+        font-size: 2em;
+    }
+    h2 {
+        font-size: 1.5em;
+    }
+    .st-emotion-cache-1y4p8pa {
+        flex-direction: column;
+    }
 }
