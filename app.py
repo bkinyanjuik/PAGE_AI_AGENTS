@@ -4,11 +4,10 @@ from crewai import Task, Crew
 import logging
 from io import StringIO
 import time
+import sys
 
 def setup_logging():
-    log_stream = StringIO()
-    logging.basicConfig(stream=log_stream, level=logging.INFO)
-    return log_stream
+    logging.basicConfig(filename='app.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def local_css(file_name):
     with open(file_name) as f:
@@ -34,36 +33,37 @@ def metrics_dashboard():
         st.markdown("<div class='glass-morphism'><h3>Uptime</h3><h2>24/7</h2></div>", unsafe_allow_html=True)
     st.markdown("---")
 
+DEPARTMENTS = {
+    "Executive Team": ["CEO Agent (Strategy Chief)", "COO Agent (Operations Optimizer)"],
+    "Product & Engineering": [
+        "Product Manager Agent (MVP Designer)", "Engineering Agent (Code Builder)", "QA Agent (Bug Hunter)",
+        "DevOps Agent (Auto-Deployer)", "Integration Agent (API Connector)", "Model Trainer Agent (ML Tuner)"
+    ],
+    "Business & Finance": ["Finance Agent (Profit Analyst)", "Accounting Agent (Bookkeeper)", "Legal Agent (Contract Checker)"],
+    "Marketing & Sales": [
+        "Campaign Agent (Growth Hacker)", "Copywriting Agent (Content Wizard)", "SEO Agent (Discoverability Master)",
+        "A/B Tester Agent (Experimentor)"
+    ],
+    "Customer Experience & Support": [
+        "Support Bot Dev Agent (ChatBot Builder)", "Onboarding Agent (User Guide)", "Feedback Analyst (Sentiment Decoder)"
+    ],
+    "Field Operations": ["Data Scout Agent (Dataset Hunter)", "Competitor Tracker (Market Eye)"]
+}
+
 def agent_command_center():
     st.header("Agent Command Center")
-    departments = {
-        "Executive Team": ["CEO Agent (Strategy Chief)", "COO Agent (Operations Optimizer)"],
-        "Product & Engineering": [
-            "Product Manager Agent (MVP Designer)", "Engineering Agent (Code Builder)", "QA Agent (Bug Hunter)",
-            "DevOps Agent (Auto-Deployer)", "Integration Agent (API Connector)", "Model Trainer Agent (ML Tuner)"
-        ],
-        "Business & Finance": ["Finance Agent (Profit Analyst)", "Accounting Agent (Bookkeeper)", "Legal Agent (Contract Checker)"],
-        "Marketing & Sales": [
-            "Campaign Agent (Growth Hacker)", "Copywriting Agent (Content Wizard)", "SEO Agent (Discoverability Master)",
-            "A/B Tester Agent (Experimentor)"
-        ],
-        "Customer Experience & Support": [
-            "Support Bot Dev Agent (ChatBot Builder)", "Onboarding Agent (User Guide)", "Feedback Analyst (Sentiment Decoder)"
-        ],
-        "Field Operations": ["Data Scout Agent (Dataset Hunter)", "Competitor Tracker (Market Eye)"]
-    }
-
-    for dept, agent_roles in departments.items():
+    for dept, agent_roles in DEPARTMENTS.items():
         with st.expander(f"**{dept}**"):
             cols = st.columns(3)
             for i, role in enumerate(agent_roles):
                 agent = next((a for a in page_ai_crew.agents if a.role == role), None)
                 if agent:
                     with cols[i % 3]:
+                        status_class = "status-indicator " + agent.status.lower()
                         st.markdown(
                             f"""
                             <div class='glass-morphism agent-card'>
-                                <h4>{agent.role} <span class='status-indicator'></span></h4>
+                                <h4>{agent.role} <span class='{status_class}'></span> {agent.status}</h4>
                                 <p>{agent.goal}</p>
                             </div>
                             """,
@@ -105,33 +105,56 @@ def mission_execution_and_chat():
                 message_placeholder = st.empty()
                 with st.spinner("Thinking..."):
                     try:
+                        # Redirect stdout to capture verbose output
+                        old_stdout = sys.stdout
+                        sys.stdout = captured_output = StringIO()
+
                         task = Task(description=prompt, agent=selected_agent, expected_output="A helpful response.")
                         temp_crew = Crew(
                             agents=[selected_agent],
                             tasks=[task],
-                            verbose=True
+                            verbose=2
                         )
                         response = temp_crew.kickoff()
-                        message_placeholder.markdown(response)
+
+                        # Restore stdout
+                        sys.stdout = old_stdout
+
+                        verbose_output = captured_output.getvalue()
                         st.session_state.messages[selected_agent.role].append({"role": "assistant", "content": response})
+
+                        with st.expander("View Execution Log"):
+                            st.text(verbose_output)
+                        message_placeholder.markdown(response)
+
                     except Exception as e:
+                        logging.error(f"Error during chat mission execution: {e}", exc_info=True)
                         st.error(f"An error occurred: {e}")
 
 def run_full_crew_mission():
     if st.button("Launch Full Crew Mission"):
         with st.spinner("The crew is on a mission..."):
             try:
+                # Redirect stdout to capture verbose output
+                old_stdout = sys.stdout
+                sys.stdout = captured_output = StringIO()
+
                 result = page_ai_crew.kickoff()
+
+                # Restore stdout
+                sys.stdout = old_stdout
+
+                verbose_output = captured_output.getvalue()
                 st.success("Mission Accomplished!")
-                st.expander("View Mission Results").write(result)
+                with st.expander("View Mission Results"):
+                    st.write(result)
+                with st.expander("View Execution Log"):
+                    st.text(verbose_output)
+
             except Exception as e:
+                logging.error(f"Error during full crew mission execution: {e}", exc_info=True)
                 st.error(f"An error occurred during the mission: {e}")
 
-def activity_logs(log_stream):
-    st.sidebar.header("Activity Logs")
-    logs_container = st.sidebar.expander("View Logs")
-    log_stream.seek(0)
-    logs_container.text(log_stream.read())
 
 def load_particles_js():
     st.markdown(
@@ -248,16 +271,18 @@ def load_particles_js():
         unsafe_allow_html=True
     )
 
-def main():
+def initialize_app():
     st.set_page_config(page_title="PAGE AI - The Future of Organizational AI", layout="wide")
-    log_stream = setup_logging()
+    setup_logging()
     local_css("style.css")
+
+def main():
+    initialize_app()
     hero_section()
     metrics_dashboard()
     agent_command_center()
     mission_execution_and_chat()
     run_full_crew_mission()
-    activity_logs(log_stream)
     load_particles_js()
 
 if __name__ == "__main__":

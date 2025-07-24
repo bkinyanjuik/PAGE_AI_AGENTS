@@ -38,10 +38,21 @@ body {
 .status-indicator {
     height: 10px;
     width: 10px;
-    background-color: #00ff00; /* Green for online */
     border-radius: 50%;
     display: inline-block;
     margin-left: 10px;
+}
+
+.status-indicator.idle {
+    background-color: #bbb;
+}
+
+.status-indicator.running {
+    background-color: #28a745;
+}
+
+.status-indicator.error {
+    background-color: #dc3545;
 }
 
 /* Custom scrollbar */

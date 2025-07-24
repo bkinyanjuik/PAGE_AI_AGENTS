@@ -1,5 +1,10 @@
 import os
 from crewai import Agent, Task, Crew, Process
+
+class PageAIAgent(Agent):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.status = "Idle"
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 
@@ -24,7 +29,7 @@ llm = ChatOpenAI(
 # -------------------------
 
 # Executive Team
-strategy_chief = Agent(
+strategy_chief = PageAIAgent(
     role='CEO Agent (Strategy Chief)',
     goal='Define long-term goals, assign tasks to other agents, and monitor success metrics for PAGE AI.',
     backstory=(
@@ -37,7 +42,7 @@ strategy_chief = Agent(
     verbose=True
 )
 
-operations_optimizer = Agent(
+operations_optimizer = PageAIAgent(
     role='COO Agent (Operations Optimizer)',
     goal='Oversee daily operations, schedule agents, and allocate compute/resources efficiently.',
     backstory=(
@@ -51,7 +56,7 @@ operations_optimizer = Agent(
 )
 
 # Product & Engineering Department
-mvp_designer = Agent(
+mvp_designer = PageAIAgent(
     role='Product Manager Agent (MVP Designer)',
     goal='Analyze user feedback, define product features, and prioritize the roadmap for maximum impact.',
     backstory=(
@@ -63,7 +68,7 @@ mvp_designer = Agent(
     verbose=True
 )
 
-code_builder = Agent(
+code_builder = PageAIAgent(
     role='Engineering Agent (Code Builder)',
     goal='Write, test, and maintain the backend, frontend, and API integrations for the PAGE AI platform.',
     backstory=(
@@ -75,7 +80,7 @@ code_builder = Agent(
     verbose=True
 )
 
-bug_hunter = Agent(
+bug_hunter = PageAIAgent(
     role='QA Agent (Bug Hunter)',
     goal='Test the platform rigorously, identify and report bugs, and ensure the reliability of every feature.',
     backstory=(
@@ -87,7 +92,7 @@ bug_hunter = Agent(
     verbose=True
 )
 
-auto_deployer = Agent(
+auto_deployer = PageAIAgent(
     role='DevOps Agent (Auto-Deployer)',
     goal='Automate the deployment pipeline, manage cloud infrastructure, and ensure high availability of the platform.',
     backstory=(
@@ -99,7 +104,7 @@ auto_deployer = Agent(
     verbose=True
 )
 
-api_connector = Agent(
+api_connector = PageAIAgent(
     role='Integration Agent (API Connector)',
     goal='Manage and maintain integrations with third-party services like iPay, GitHub, and OAuth.',
     backstory=(
@@ -111,7 +116,7 @@ api_connector = Agent(
     verbose=True
 )
 
-ml_tuner = Agent(
+ml_tuner = PageAIAgent(
     role='Model Trainer Agent (ML Tuner)',
     goal='Fine-tune and optimize the credit scoring models using fresh data to improve accuracy and performance.',
     backstory=(
@@ -124,7 +129,7 @@ ml_tuner = Agent(
 )
 
 # Business & Finance
-profit_analyst = Agent(
+profit_analyst = PageAIAgent(
     role='Finance Agent (Profit Analyst)',
     goal='Generate budgets, create financial forecasts, and develop profitability models for PAGE AI.',
     backstory=(
@@ -136,7 +141,7 @@ profit_analyst = Agent(
     verbose=True
 )
 
-bookkeeper = Agent(
+bookkeeper = PageAIAgent(
     role='Accounting Agent (Bookkeeper)',
     goal='Log all income and expenses, prepare financial reports, and maintain accurate financial records.',
     backstory=(
@@ -148,7 +153,7 @@ bookkeeper = Agent(
     verbose=True
 )
 
-contract_checker = Agent(
+contract_checker = PageAIAgent(
     role='Legal Agent (Contract Checker)',
     goal='Review legal policies, draft terms of service, and ensure compliance with regulations like GDPR and CBK.',
     backstory=(
@@ -161,7 +166,7 @@ contract_checker = Agent(
 )
 
 # Marketing & Sales
-campaign_strategist = Agent(
+campaign_strategist = PageAIAgent(
     role='Campaign Agent (Growth Hacker)',
     goal='Plan and launch marketing campaigns across various channels to drive user acquisition and growth.',
     backstory=(
@@ -174,7 +179,7 @@ campaign_strategist = Agent(
     verbose=True
 )
 
-content_wizard = Agent(
+content_wizard = PageAIAgent(
     role='Copywriting Agent (Content Wizard)',
     goal='Write compelling copy for the landing page, social media, blog posts, and advertisements.',
     backstory=(
@@ -186,7 +191,7 @@ content_wizard = Agent(
     verbose=True
 )
 
-discoverability_master = Agent(
+discoverability_master = PageAIAgent(
     role='SEO Agent (Discoverability Master)',
     goal='Optimize the website and blog content to rank higher in search engine results and drive organic traffic.',
     backstory=(
@@ -198,7 +203,7 @@ discoverability_master = Agent(
     verbose=True
 )
 
-experimentor = Agent(
+experimentor = PageAIAgent(
     role='A/B Tester Agent (Experimentor)',
     goal='Launch and analyze A/B tests on copy, landing pages, and features to find what converts best.',
     backstory=(
@@ -211,7 +216,7 @@ experimentor = Agent(
 )
 
 # Customer Experience & Support
-chatbot_builder = Agent(
+chatbot_builder = PageAIAgent(
     role='Support Bot Dev Agent (ChatBot Builder)',
     goal='Build, maintain, and improve the AI-powered customer support system.',
     backstory=(
@@ -223,7 +228,7 @@ chatbot_builder = Agent(
     verbose=True
 )
 
-user_guide = Agent(
+user_guide = PageAIAgent(
     role='Onboarding Agent (User Guide)',
     goal='Create a seamless onboarding experience that teaches users how to use the platform step-by-step.',
     backstory=(
@@ -235,7 +240,7 @@ user_guide = Agent(
     verbose=True
 )
 
-sentiment_decoder = Agent(
+sentiment_decoder = PageAIAgent(
     role='Feedback Analyst (Sentiment Decoder)',
     goal='Analyze user feedback from various sources and route insights to the Product Manager Agent.',
     backstory=(
@@ -248,7 +253,7 @@ sentiment_decoder = Agent(
 )
 
 # Field Operations
-dataset_hunter = Agent(
+dataset_hunter = PageAIAgent(
     role='Data Scout Agent (Dataset Hunter)',
     goal='Find and acquire high-quality, publicly available datasets to improve the credit scoring models.',
     backstory=(
@@ -260,7 +265,7 @@ dataset_hunter = Agent(
     verbose=True
 )
 
-market_eye = Agent(
+market_eye = PageAIAgent(
     role='Competitor Tracker (Market Eye)',
     goal='Analyze competitors, monitor market trends, and provide strategic reports to the CEO Agent.',
     backstory=(
