@@ -9,8 +9,12 @@ load_dotenv()
 # Set up the language model
 # -------------------------
 # Initialize the language model with the OpenRouter API key.
+openrouter_api_key = os.environ.get("OPENROUTER_API_KEY")
+if not openrouter_api_key:
+    raise ValueError("OPENROUTER_API_KEY not found in .env file. Please add it to run the application.")
+
 llm = ChatOpenAI(
-    api_key=os.environ.get("OPENROUTER_API_KEY"),
+    api_key=openrouter_api_key,
     base_url="https://openrouter.ai/api/v1",
     model="deepseek/deepseek-v3-base",
 )
@@ -384,7 +388,8 @@ if __name__ == "__main__":
 #
 # 4. **Add Environment Variables:**
 #    - Click on the "Environment" tab.
-#    - Add a new environment variable:
+#    - Create a new environment variable for each variable in the `.env.example` file.
+#    - For example:
 #      - **Key:** `OPENROUTER_API_KEY`
 #      - **Value:** Your actual OpenRouter API key.
 #    - **Note:** It's recommended to use Render's "Secret Files" for sensitive keys.
