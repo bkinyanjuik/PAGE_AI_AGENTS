@@ -141,4 +141,64 @@ export class CrewAIService {
       limit: 5
     });
   }
+
+  async getAdvisories(): Promise<any> {
+    // TODO: Implement actual advisory fetching
+    return {
+      "task-1": [
+        {
+          "advisory_id": "adv-1",
+          "suggestion": "Consider using a more efficient algorithm.",
+          "confidence": 0.8,
+          "implemented": false
+        },
+        {
+          "advisory_id": "adv-2",
+          "suggestion": "Refactor the database schema for better performance.",
+          "confidence": 0.9,
+          "implemented": true
+        }
+      ]
+    };
+  }
+
+  async getTasks(): Promise<any> {
+    // TODO: Implement actual task fetching
+    return [
+      {
+        "task_id": "task-1",
+        "title": "Optimize the database",
+        "description": "The current database is slow and needs to be optimized.",
+        "assigned_to": "agent-1",
+        "priority": "HIGH"
+      },
+      {
+        "task_id": "task-2",
+        "title": "Implement the new UI",
+        "description": "The new UI needs to be implemented for the dashboard.",
+        "assigned_to": "agent-2",
+        "priority": "MEDIUM"
+      }
+    ];
+  }
+
+  async getWorkflows(): Promise<any> {
+    // TODO: Implement actual workflow fetching
+    return [
+      {
+        "id": "wf-1",
+        "name": "Data Processing Workflow",
+        "description": "A workflow for processing data.",
+        "completedTasks": 2,
+        "totalTasks": 5,
+        "tasks": [
+          { "id": "t-1", "name": "Fetch Data", "agent": "Data Fetcher", "status": "completed", "duration": "2m" },
+          { "id": "t-2", "name": "Clean Data", "agent": "Data Cleaner", "status": "completed", "duration": "5m" },
+          { "id": "t-3", "name": "Analyze Data", "agent": "Data Analyst", "status": "in_progress" },
+          { "id": "t-4", "name": "Generate Report", "agent": "Report Generator", "status": "pending" },
+          { "id": "t-5", "name": "Send Report", "agent": "Notifier", "status": "pending" }
+        ]
+      }
+    ];
+  }
 }
