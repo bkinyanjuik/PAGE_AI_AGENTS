@@ -1,0 +1,126 @@
+.test-environment-panel {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 1rem;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.test-controls {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+}
+
+.file-editors {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.file-editor {
+  display: flex;
+  flex-direction: column;
+}
+
+.file-editor textarea {
+  height: 200px;
+  font-family: monospace;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.environment-list {
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.environment-card {
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.environment-card:hover {
+  background: #f5f5f5;
+}
+
+.environment-card.selected {
+  border-color: #2196f3;
+  background: #e3f2fd;
+}
+
+.env-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.status {
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+.status.creating { background: #fff9c4; }
+.status.running { background: #b3e5fc; }
+.status.completed { background: #c8e6c9; }
+.status.failed { background: #ffcdd2; }
+
+.test-results {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+
+.metric {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.passed { color: #4caf50; }
+.failed { color: #f44336; }
+
+.log-viewer {
+  background: #1e1e1e;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 4px;
+  font-family: monospace;
+  height: 300px;
+  overflow-y: auto;
+}
+
+.log-line {
+  white-space: pre-wrap;
+  margin-bottom: 0.25rem;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  background: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #1976d2;
+}
+
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+

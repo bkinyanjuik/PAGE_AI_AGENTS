@@ -1,0 +1,36 @@
+interface EmailConfig {
+  subject: string;
+  content: string;
+  priority?: 'low' | 'medium' | 'high';
+  recipients?: string[];
+}
+
+export class EmailService {
+  private defaultRecipient: string;
+  
+  constructor() {
+    this.defaultRecipient = process.env.NEXT_PUBLIC_NOTIFICATION_EMAIL || '';
+  }
+
+  async sendUpdate(config: EmailConfig): Promise<boolean> {
+    try {
+      const response = await fetch('/api/email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          to: config.recipients || [this.defaultRecipient],
+          subject: config.subject,
+          content: config.content,
+          priority: config.priority || 'low'
+        }),
+      });
+
+      return response.ok;
+    } catch (error) {
+      console.error('Failed to send email update:', error);
+      return false;
+    }
+  }
+}
