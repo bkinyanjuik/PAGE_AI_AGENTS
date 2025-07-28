@@ -1,15 +1,14 @@
-import { Configuration, OpenAIApi } from 'openai';
+import OpenAI from 'openai';
 import { MemoryVector } from '../types/memory';
 
 export class EmbeddingsService {
   private static instance: EmbeddingsService;
-  private openai: OpenAIApi;
+  private openai: OpenAI;
 
   private constructor() {
-    const configuration = new Configuration({
+    this.openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
     });
-    this.openai = new OpenAIApi(configuration);
   }
 
   static getInstance(): EmbeddingsService {
