@@ -1,3 +1,5 @@
+import { TaskInfo } from './agents';
+
 export interface MemoryVector {
   id: string;
   vector: number[];
