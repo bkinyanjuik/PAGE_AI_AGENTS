@@ -48,6 +48,9 @@ export interface AgentPerformanceMetrics {
   taskFailureCount: number;
   feedbackScore: number;
   lastUpdated: number;
+  buildTime?: number;
+  testsPassed?: number;
+  testsFailed?: number;
 }
 
 export interface PostmortemAnalysis {
