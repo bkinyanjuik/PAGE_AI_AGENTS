@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { RoleSpecificAgent, ModelConfig } from '@/types/agents';
+import { BaseRoleAgent } from '@/types/agents';
+import { ModelConfig } from '@/lib/config/modelConfig';
 
-export class BaseRoleSpecificAgent implements RoleSpecificAgent {
+export class BaseRoleSpecificAgent implements BaseRoleAgent {
   name: string;
   primaryModel: ModelConfig;
   fallbackModels: ModelConfig[];

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DockerTestService } from '../services/dockerTestService';
+import { DockerTestService, TestEnvironment } from '../services/dockerTestService';
 
 interface Props {
   agentId: string;

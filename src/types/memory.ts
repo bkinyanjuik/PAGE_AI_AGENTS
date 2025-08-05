@@ -71,7 +71,7 @@ export interface HumanFeedback {
 
 // Extend MemoryVector metadata
 export interface MemoryVectorMetadata {
-  type: 'task' | 'conversation' | 'document' | 'code' | 'performance' | 'postmortem' | 'feedback';
+  type: 'task' | 'conversation' | 'document' | 'code' | 'performance' | 'postmortem' | 'feedback' | 'log';
   content: string;
   timestamp: number;
   agentId?: string;

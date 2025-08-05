@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { NotificationService } from './notificationService';
 import { MemoryService } from './memoryService';
 
-interface TestEnvironment {
+export interface TestEnvironment {
   id: string;
   agentId: string;
   status: 'creating' | 'running' | 'completed' | 'failed';

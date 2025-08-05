@@ -35,8 +35,15 @@ export class AgentControlService {
     if (!agent) return null;
 
     // Get latest metrics and logs
-    const metrics = await this.memoryService.getAgentPerformance(agentId);
+    const performanceMetrics = await this.memoryService.getAgentPerformance(agentId);
     const recentLogs = await this.getAgentLogs(agentId);
+
+    const metrics = {
+      tasksCompleted: performanceMetrics.taskSuccessCount,
+      successRate: performanceMetrics.completionRate,
+      averageResponseTime: performanceMetrics.averageResponseTime,
+      lastActive: new Date(performanceMetrics.lastUpdated),
+    };
 
     return {
       ...agent,
@@ -52,19 +59,21 @@ export class AgentControlService {
     // Create task from command
     const task: TaskInfo = {
       id: uuidv4(),
-      type: 'manual_trigger',
-      input: command.taskInput,
+      title: 'Manual Trigger',
+      description: `Manually triggered task with input: ${JSON.stringify(command.taskInput)}`,
       priority: command.priority || 'medium',
-      timestamp: Date.now()
+      status: 'pending',
+      assignedTo: command.agentId,
+      progress: 0,
+      requiredCapabilities: command.requiredCapabilities
     };
 
     // Log the trigger action
     await this.logAgentAction(command.agentId, {
       type: 'action',
-      content: `Agent manually triggered: ${task.type}`,
+      content: `Agent manually triggered`,
       metadata: {
-        taskId: task.id,
-        command: command.type
+        taskId: task.id
       }
     });
 
