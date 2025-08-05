@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@octokit/rest": "^22.0.0",
     "dockerode": "^4.0.7",
     "next": "latest",
     "openai": "^5.11.0",
