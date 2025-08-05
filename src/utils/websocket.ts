@@ -94,4 +94,10 @@ export class WebSocketService {
       }));
     }
   }
+
+  broadcast(message: any) {
+    if (this.ws?.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify(message));
+    }
+  }
 }
