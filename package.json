@@ -10,6 +10,7 @@
   "dependencies": {
     "@octokit/rest": "^22.0.0",
     "@qdrant/js-client-rest": "^1.15.0",
+    "@slack/web-api": "^7.9.3",
     "dockerode": "^4.0.7",
     "next": "latest",
     "openai": "^5.11.0",
