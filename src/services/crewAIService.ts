@@ -1,5 +1,6 @@
 import { RoleSpecificAgent, TaskInfo, TaskResult } from '../types/agents';
 import { MemoryService } from './memoryService';
+import { MemorySearchResult } from '../types/memory';
 
 interface CrewTask {
   id: string;

@@ -66,7 +66,13 @@ export class AgentService {
       },
       collaborate(agents: RoleSpecificAgent[]): void {
         // Collaboration logic between agents
-      }
+      },
+      collaborationConfig: {
+        canInitiateChat: true,
+        notificationPreferences: {
+          email: true,
+        },
+      },
     };
 
     this.agents.set(agent.id, agent);

@@ -16,13 +16,22 @@ export default async function handler(
       return res.status(200).json(tasks);
     case 'POST':
       try {
-        const { title, description, assigned_to, priority } = req.body;
+        const { title, description, assigned_to, priority, requiredCapabilities } = req.body;
         const agent = agentService.getAgent(assigned_to);
         if (!agent) {
           return res.status(404).json({ error: 'Agent not found' });
         }
         // This is a simplified task creation, we'll need to expand on this
-        await crewAIService.assignTask({ id: `task-${Date.now()}`, title, description, priority }, agent);
+        await crewAIService.assignTask({
+          id: `task-${Date.now()}`,
+          title,
+          description,
+          priority,
+          status: 'pending',
+          assignedTo: agent.id,
+          progress: 0,
+          requiredCapabilities,
+        }, agent);
         return res.status(200).json({ message: 'Task created' });
       } catch (error) {
         return res.status(500).json({ error: 'Failed to create task' });

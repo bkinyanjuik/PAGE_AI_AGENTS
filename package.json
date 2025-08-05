@@ -8,14 +8,18 @@
     "start": "next start"
   },
   "dependencies": {
+    "dockerode": "^4.0.7",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "@types/dockerode": "^3.3.42",
     "@types/node": "24.1.0",
     "@types/react": "19.1.8",
     "@types/react-dom": "latest",
+    "@types/uuid": "^10.0.0",
     "typescript": "5.8.3"
   }
 }

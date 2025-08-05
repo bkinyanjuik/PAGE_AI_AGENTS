@@ -251,7 +251,7 @@ export class ConflictResolverService {
   }
 
   private generateReasoning(scores: AgentScore[], selectedAgentId: string): string {
-    const selectedAgent = scores.find(s => s.id === selectedAgentId)!;
+    const selectedAgent = scores.find(s => s.agentId === selectedAgentId)!;
     const breakdown = selectedAgent.breakdown;
 
     return `Selected agent based on:

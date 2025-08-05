@@ -8,17 +8,17 @@ export interface BaseAgent {
   kwargs: Record<string, any>;
 }
 
-export interface RoleSpecificAgent extends BaseAgent {
+export interface BaseRoleAgent extends BaseAgent {
   fallbackToNextModel(): Promise<boolean>;
 }
 
 // Role-specific agent types
-export interface BackendEngineer extends RoleSpecificAgent {}
-export interface FrontendDeveloper extends RoleSpecificAgent {}
-export interface DevOpsEngineer extends RoleSpecificAgent {}
-export interface TechLead extends RoleSpecificAgent {}
-export interface AgentArchitect extends RoleSpecificAgent {}
-export interface QAEngineer extends RoleSpecificAgent {}
+export interface BackendEngineer extends BaseRoleAgent {}
+export interface FrontendDeveloper extends BaseRoleAgent {}
+export interface DevOpsEngineer extends BaseRoleAgent {}
+export interface TechLead extends BaseRoleAgent {}
+export interface AgentArchitect extends BaseRoleAgent {}
+export interface QAEngineer extends BaseRoleAgent {}
 
 export interface Agent {
   id: string;
@@ -53,6 +53,7 @@ export interface TaskInfo {
   progress: number;
   deadline?: Date;
   dependencies?: string[];
+  requiredCapabilities?: string[];
 }
 
 export enum TeamType {
@@ -158,4 +159,5 @@ export interface AgentControlCommand {
   taskInput?: any;
   priority?: 'low' | 'medium' | 'high';
   metadata?: Record<string, any>;
+  requiredCapabilities?: string[];
 }
