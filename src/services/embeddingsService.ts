@@ -20,11 +20,11 @@ export class EmbeddingsService {
 
   async createEmbedding(text: string): Promise<number[]> {
     try {
-      const response = await this.openai.createEmbedding({
+      const response = await this.openai.embeddings.create({
         model: 'text-embedding-ada-002',
         input: text,
       });
-      return response.data.data[0].embedding;
+      return response.data[0].embedding;
     } catch (error) {
       console.error('Failed to create embedding:', error);
       throw error;
@@ -33,11 +33,11 @@ export class EmbeddingsService {
 
   async createBatchEmbeddings(texts: string[]): Promise<number[][]> {
     try {
-      const response = await this.openai.createEmbedding({
+      const response = await this.openai.embeddings.create({
         model: 'text-embedding-ada-002',
         input: texts,
       });
-      return response.data.data.map(item => item.embedding);
+      return response.data.map(item => item.embedding);
     } catch (error) {
       console.error('Failed to create batch embeddings:', error);
       throw error;
