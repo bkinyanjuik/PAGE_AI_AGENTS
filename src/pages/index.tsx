@@ -1,19 +1,20 @@
 import React from 'react';
-import Advisories from '../components/Advisories';
-import Agents from '../components/Agents';
-import Tasks from '../components/Tasks';
-import Workflows from '../components/Workflows';
+import Head from 'next/head';
+import Navigation from '../components/Navigation';
+import LandingPage from '../components/LandingPage';
 
-const HomePage = () => {
+const Home = () => {
   return (
-    <div>
-      <h1>Vibecoded App</h1>
-      <Advisories />
-      <Agents />
-      <Tasks />
-      <Workflows />
-    </div>
+    <>
+      <Head>
+        <title>Vibecoded - AI Agent Orchestration Platform</title>
+        <meta name="description" content="Next-generation AI Agent Orchestration Platform" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Navigation />
+      <LandingPage />
+    </>
   );
 };
 
-export default HomePage;
+export default Home;
