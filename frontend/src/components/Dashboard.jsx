@@ -1,4 +1,3 @@
-// Trivial change to force a new commit.
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import AgentCard from './AgentCard';
@@ -104,7 +103,10 @@ const Dashboard = () => {
   return (
     <div className="p-4 md:p-6 space-y-6">
       <header className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">AI Agent Dashboard (Test v2)</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">PAGE AI AGENTS</h1>
+          <p className="text-sm text-gray-500">The Digital Workers of the Future</p>
+        </div>
         <div className="flex space-x-2">
           <button 
             onClick={() => setActiveTab('overview')}

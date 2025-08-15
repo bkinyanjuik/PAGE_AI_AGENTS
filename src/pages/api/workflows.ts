@@ -11,7 +11,6 @@ export default async function handler(
   switch (method) {
     case 'GET':
       const workflows = await crewAIService.getWorkflows();
-      console.log(`[API /api/workflows] Sending data:`, JSON.stringify(workflows, null, 2));
       return res.status(200).json(workflows);
     default:
       res.setHeader('Allow', ['GET']);

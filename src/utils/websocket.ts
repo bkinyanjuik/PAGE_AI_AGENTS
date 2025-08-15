@@ -54,12 +54,8 @@ export class WebSocketService {
   private reconnectDelay = 1000;
 
   constructor() {
-    console.log('[WebSocketService] Constructor called.');
     if (typeof window !== 'undefined') {
-      console.log('[WebSocketService] Running in browser environment, initializing WebSocket.');
       this.initializeWebSocket();
-    } else {
-      console.log('[WebSocketService] Not in browser environment, skipping WebSocket initialization.');
     }
   }
 
