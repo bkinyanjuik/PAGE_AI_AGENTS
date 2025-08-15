@@ -11,18 +11,9 @@ export class AgentService {
   private wsService: WebSocketService;
 
   private constructor() {
-    console.log('[AgentService] Constructor called.');
-    try {
-      this.agents = new Map();
-      this.emailService = new EmailService();
-      console.log('[AgentService] EmailService instance obtained.');
-      this.wsService = new WebSocketService();
-      console.log('[AgentService] WebSocketService instance obtained.');
-      console.log('[AgentService] Constructor finished successfully.');
-    } catch (error) {
-      console.error('[AgentService] Error during initialization:', error);
-      throw error;
-    }
+    this.agents = new Map();
+    this.emailService = new EmailService();
+    this.wsService = new WebSocketService();
   }
 
   static getInstance(): AgentService {

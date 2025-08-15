@@ -9,9 +9,18 @@ export default async function handler(
   const agentService = AgentService.getInstance();
   switch (method) {
     case 'GET':
-      const agents = agentService.getAllAgents();
-      console.log(`[API /api/agents] Sending data:`, JSON.stringify(agents, null, 2));
-      return res.status(200).json(agents);
+      const { id } = query;
+      if (id) {
+        const agent = agentService.getAgent(id as string);
+        if (agent) {
+          return res.status(200).json(agent);
+        } else {
+          return res.status(404).json({ error: `Agent with id ${id} not found` });
+        }
+      } else {
+        const agents = agentService.getAllAgents();
+        return res.status(200).json(agents);
+      }
     case 'POST':
       try {
         const { role } = req.body;

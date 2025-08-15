@@ -19,22 +19,13 @@ export class MemoryService {
   private shortTermMemory: ShortTermMemory;
 
   private constructor() {
-    console.log('[MemoryService] Constructor called.');
-    try {
-      this.qdrant = new QdrantClient({ url: MEMORY_CONFIG.vectorDbUrl });
-      console.log('[MemoryService] Qdrant client initialized.');
-      this.embeddings = EmbeddingsService.getInstance();
-      console.log('[MemoryService] EmbeddingsService instance obtained.');
-      this.shortTermMemory = {
-        recentTasks: new Map(),
-        conversationContext: new Map(),
-        temporaryNotes: new Map()
-      };
-      console.log('[MemoryService] Constructor finished successfully.');
-    } catch (error) {
-      console.error('[MemoryService] Error during initialization:', error);
-      throw error;
-    }
+    this.qdrant = new QdrantClient({ url: MEMORY_CONFIG.vectorDbUrl });
+    this.embeddings = EmbeddingsService.getInstance();
+    this.shortTermMemory = {
+      recentTasks: new Map(),
+      conversationContext: new Map(),
+      temporaryNotes: new Map()
+    };
   }
 
   static getInstance(): MemoryService {
