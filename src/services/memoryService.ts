@@ -1,16 +1,16 @@
 import { QdrantClient } from '@qdrant/js-client-rest';
 import { v4 as uuidv4 } from 'uuid';
-import { 
-  MemoryVector, 
-  MemorySearchResult, 
+import {
+  MemoryVector,
+  MemorySearchResult,
   ShortTermMemory,
   MemoryQueryOptions,
   AgentPerformanceMetrics,
   PostmortemAnalysis,
   HumanFeedback
-} from '../types/memory';
-import { MEMORY_CONFIG, MEMORY_COLLECTIONS } from '../config/memoryConfig';
-import { EmbeddingsService } from './embeddingsService';
+} from '@/types/memory';
+import { MEMORY_CONFIG, MEMORY_COLLECTIONS } from '@/config/memoryConfig';
+import { EmbeddingsService } from '@/services/embeddingsService';
 
 export class MemoryService {
   private static instance: MemoryService;

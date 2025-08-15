@@ -1,5 +1,5 @@
-import { EmailService } from './emailService';
-import { WebSocketService } from '../utils/websocket';
+import { EmailService } from '@/services/emailService';
+import { WebSocketService } from '@/utils/websocket';
 import { WebClient } from '@slack/web-api';
 
 interface NotificationConfig {

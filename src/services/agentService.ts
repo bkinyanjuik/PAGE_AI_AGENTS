@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
-import { RoleSpecificAgent, AgentRole, TaskInfo, TaskResult } from '../types/agents';
-import { AgentType, getModelForAgent, getFallbackModel } from '../lib/config/modelConfig';
-import { EmailService } from './emailService';
-import { WebSocketService } from '../utils/websocket';
+import { RoleSpecificAgent, AgentRole, TaskInfo, TaskResult } from '@/types/agents';
+import { AgentType, getModelForAgent, getFallbackModel } from '@/lib/config/modelConfig';
+import { EmailService } from '@/services/emailService';
+import { WebSocketService } from '@/utils/websocket';
 
 export class AgentService {
   private static instance: AgentService;
