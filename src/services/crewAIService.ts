@@ -18,9 +18,17 @@ export class CrewAIService {
   private memoryService: MemoryService;
 
   private constructor() {
-    this.tasks = new Map();
-    this.agentGraph = new Map();
-    this.memoryService = MemoryService.getInstance();
+    console.log('[CrewAIService] Constructor called.');
+    try {
+      this.tasks = new Map();
+      this.agentGraph = new Map();
+      this.memoryService = MemoryService.getInstance();
+      console.log('[CrewAIService] MemoryService instance obtained.');
+      console.log('[CrewAIService] Constructor finished successfully.');
+    } catch (error) {
+      console.error('[CrewAIService] Error during initialization:', error);
+      throw error;
+    }
   }
 
   static getInstance(): CrewAIService {
