@@ -61,12 +61,12 @@ export class NotificationService {
       );
     }
 
-    if (config.websocket) {
-      this.wsService.broadcast({
-        type: 'NOTIFICATION',
-        payload: message
-      });
-    }
+    // if (config.websocket) {
+    //   this.wsService.broadcast({
+    //     type: 'NOTIFICATION',
+    //     payload: message
+    //   });
+    // }
 
     await Promise.all(notifications);
   }
