@@ -40,7 +40,13 @@ const Dashboard = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setAgents(data);
+      if (Array.isArray(data)) {
+        setAgents(data);
+      } else {
+        console.error("Received non-array data for agents:", data);
+        toast.error('Received invalid data for agents');
+        setAgents([]); // Set to empty array to prevent crash
+      }
     } catch (error) {
       console.error("Failed to fetch agents:", error);
       toast.error('Failed to fetch agents');
@@ -54,7 +60,13 @@ const Dashboard = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setWorkflows(data);
+      if (Array.isArray(data)) {
+        setWorkflows(data);
+      } else {
+        console.error("Received non-array data for workflows:", data);
+        toast.error('Received invalid data for workflows');
+        setWorkflows([]); // Set to empty array to prevent crash
+      }
     } catch (error) {
       console.error("Failed to fetch workflows:", error);
       toast.error('Failed to fetch workflows');
