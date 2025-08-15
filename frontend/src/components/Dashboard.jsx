@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { toast } from 'react-hot-toast';
 import AgentCard from './AgentCard';
 import WorkflowProgress from './WorkflowProgress';
 import TaskManagement from './TaskManagement';
@@ -33,15 +34,31 @@ const Dashboard = () => {
   }, []);
 
   const fetchAgents = async () => {
-    const response = await fetch('/api/agents');
-    const data = await response.json();
-    setAgents(data);
+    try {
+      const response = await fetch('/api/agents');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setAgents(data);
+    } catch (error) {
+      console.error("Failed to fetch agents:", error);
+      toast.error('Failed to fetch agents');
+    }
   };
 
   const fetchWorkflows = async () => {
-    const response = await fetch('/api/workflows');
-    const data = await response.json();
-    setWorkflows(data);
+    try {
+      const response = await fetch('/api/workflows');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setWorkflows(data);
+    } catch (error) {
+      console.error("Failed to fetch workflows:", error);
+      toast.error('Failed to fetch workflows');
+    }
   };
 
   const renderContent = () => {
