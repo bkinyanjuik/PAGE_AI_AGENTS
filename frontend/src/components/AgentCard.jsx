@@ -1,38 +1,43 @@
-const AgentCard = ({ agent }) => {
-  const statusColors = {
-    active: 'bg-green-100 text-green-800',
-    idle: 'bg-gray-100 text-gray-800',
-    busy: 'bg-yellow-100 text-yellow-800',
-    error: 'bg-red-100 text-red-800'
-  };
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Card } from './common/Card';
 
+export const AgentCard = ({ agent }) => {
   return (
-    <div className="bg-white rounded-lg shadow p-4 hover:shadow-md transition-shadow">
-      <div className="flex justify-between items-start">
-        <div>
-          <h3 className="font-medium text-gray-900">{agent.role}</h3>
-          <p className="text-sm text-gray-500">{agent.division}</p>
-        </div>
-        <span className={`px-2 py-1 rounded-full text-xs ${statusColors[agent.status]}`}>
-          {agent.status}
-        </span>
-      </div>
+    <Card className="relative overflow-hidden">
+      <motion.div
+        className="absolute top-0 right-0 w-20 h-20 -mr-10 -mt-10 bg-primary/20 rounded-full blur-xl"
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.5, 0.3],
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+        }}
+      />
       
-      <div className="mt-4">
-        <div className="text-sm text-gray-600">
-          <p>Tasks Completed: {agent.tasksCompleted}</p>
-          <p>Success Rate: {agent.successRate}%</p>
+      <div className="relative z-10">
+        <h3 className="text-xl font-bold gradient-text mb-2">{agent.name}</h3>
+        <p className="text-gray-300 mb-4">{agent.role}</p>
+        
+        <div className="flex items-center gap-2">
+          <div className={`w-2 h-2 rounded-full ${
+            agent.status === 'active' ? 'bg-primary animate-pulse' : 'bg-gray-500'
+          }`} />
+          <span className="text-sm text-gray-400">{agent.status}</span>
         </div>
         
-        {agent.currentTask && (
-          <div className="mt-2 p-2 bg-gray-50 rounded text-sm">
-            <p className="font-medium">Current Task:</p>
-            <p className="text-gray-600">{agent.currentTask}</p>
+        {agent.tasks && (
+          <div className="mt-4 space-y-2">
+            {agent.tasks.map((task, index) => (
+              <div key={index} className="text-sm text-gray-300">
+                • {task}
+              </div>
+            ))}
           </div>
         )}
       </div>
-    </div>
+    </Card>
   );
 };
-
-export default AgentCard;
