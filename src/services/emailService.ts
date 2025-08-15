@@ -9,7 +9,14 @@ export class EmailService {
   private defaultRecipient: string;
   
   constructor() {
-    this.defaultRecipient = process.env.NEXT_PUBLIC_NOTIFICATION_EMAIL || '';
+    console.log('[EmailService] Constructor called.');
+    try {
+      this.defaultRecipient = process.env.NEXT_PUBLIC_NOTIFICATION_EMAIL || '';
+      console.log('[EmailService] Constructor finished successfully.');
+    } catch (error) {
+      console.error('[EmailService] Error during initialization:', error);
+      throw error;
+    }
   }
 
   async sendUpdate(config: EmailConfig): Promise<boolean> {

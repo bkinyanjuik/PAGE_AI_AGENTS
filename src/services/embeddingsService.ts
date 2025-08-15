@@ -6,9 +6,20 @@ export class EmbeddingsService {
   private openai: OpenAI;
 
   private constructor() {
-    this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
-    });
+    console.log('[EmbeddingsService] Constructor called.');
+    try {
+      if (!process.env.OPENAI_API_KEY) {
+        console.error('[EmbeddingsService] OPENAI_API_KEY is not set.');
+        throw new Error('OPENAI_API_KEY is not set.');
+      }
+      this.openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+      });
+      console.log('[EmbeddingsService] OpenAI client initialized successfully.');
+    } catch (error) {
+      console.error('[EmbeddingsService] Error during OpenAI client initialization:', error);
+      throw error; // Re-throw the error to be caught by the calling service
+    }
   }
 
   static getInstance(): EmbeddingsService {

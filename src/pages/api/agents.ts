@@ -10,6 +10,7 @@ export default async function handler(
   switch (method) {
     case 'GET':
       const agents = agentService.getAllAgents();
+      console.log(`[API /api/agents] Sending data:`, JSON.stringify(agents, null, 2));
       return res.status(200).json(agents);
     case 'POST':
       try {
