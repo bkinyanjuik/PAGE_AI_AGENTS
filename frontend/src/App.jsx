@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
-import Dashboard from './components/Dashboard';
+import React, { useState, useEffect } from 'react';
+import { Layout } from './components/layout/Layout';
+import { Dashboard } from './components/Dashboard';
 import { Toaster } from 'react-hot-toast';
 
 function App() {
@@ -17,10 +18,17 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <Layout>
       <Toaster position="top-right" />
-      <Dashboard />
-    </div>
+      <div className="space-y-8">
+        <header>
+          <h1 className="text-4xl font-bold gradient-text">Agent Control Center</h1>
+          <p className="text-gray-400 mt-2">Monitoring and managing AI agents in real-time</p>
+        </header>
+        
+        <Dashboard />
+      </div>
+    </Layout>
   );
 }
 

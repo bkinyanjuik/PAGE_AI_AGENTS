@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #00F5FF;
+  --secondary: #FF00E5;
+  --background: #0A0B1E;
+}
+
+body {
+  @apply bg-dark text-white;
+  font-family: 'Inter', sans-serif;
+}
+
+.glass-card {
+  @apply bg-opacity-5 bg-white backdrop-blur-md border border-white/10 rounded-xl;
+}
+
+.neon-border {
+  @apply relative;
+}
+
+.neon-border::after {
+  content: '';
+  @apply absolute inset-0 rounded-xl;
+  box-shadow: 0 0 15px var(--primary);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.neon-border:hover::after {
+  opacity: 1;
+}
+
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
+}

@@ -49,6 +49,9 @@ export class WebSocketClient {
 export class WebSocketService {
   private ws: WebSocket | null = null;
   private subscribers: Set<(data: any) => void> = new Set();
+  private reconnectAttempts = 0;
+  private maxReconnectAttempts = 5;
+  private reconnectDelay = 1000;
 
   constructor() {
     if (typeof window !== 'undefined') {
@@ -57,26 +60,63 @@ export class WebSocketService {
   }
 
   private initializeWebSocket() {
-    const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8000/ws';
-    this.ws = new WebSocket(wsUrl);
+    try {
+      const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8000/ws';
+      this.ws = new WebSocket(wsUrl);
 
-    this.ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      this.notifySubscribers(data);
-    };
+      this.ws.onopen = () => {
+        console.log('[WebSocketService] Connection established');
+        this.reconnectAttempts = 0;
+      };
 
-    this.ws.onclose = () => {
-      setTimeout(() => this.initializeWebSocket(), 1000);
-    };
+      this.ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          this.notifySubscribers(data);
+        } catch (error) {
+          console.error('[WebSocketService] Error parsing message:', error);
+        }
+      };
+
+      this.ws.onclose = () => {
+        console.log('[WebSocketService] Connection closed');
+        this.attemptReconnect();
+      };
+
+      this.ws.onerror = (error) => {
+        console.error('[WebSocketService] WebSocket error:', error);
+      };
+
+    } catch (error) {
+      console.error('[WebSocketService] Error initializing WebSocket:', error);
+    }
   }
 
-  subscribe(callback: (data: any) => void) {
+  private attemptReconnect() {
+    if (this.reconnectAttempts < this.maxReconnectAttempts) {
+      this.reconnectAttempts++;
+      console.log(`[WebSocketService] Attempting to reconnect (${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
+      setTimeout(() => this.initializeWebSocket(), this.reconnectDelay * this.reconnectAttempts);
+    } else {
+      console.error('[WebSocketService] Max reconnection attempts reached');
+    }
+  }
+
+  subscribe(callback: (data: any) => void): () => void {
     this.subscribers.add(callback);
-    return () => this.subscribers.delete(callback);
+    return () => {
+      this.subscribers.delete(callback);
+    };
   }
 
   private notifySubscribers(data: any) {
-    this.subscribers.forEach(callback => callback(data));
+    this.subscribers.forEach(callback => {
+      try {
+        callback(data);
+      } catch (error) {
+        console.error('[WebSocketService] Error in subscriber callback:', error);
+      }
+    });
   }
 
   broadcastAgentUpdate(agent: RoleSpecificAgent) {
@@ -97,9 +137,13 @@ export class WebSocketService {
     }
   }
 
-  broadcast(message: any) {
-    if (this.ws?.readyState === WebSocket.OPEN) {
-      this.ws.send(JSON.stringify(message));
+  disconnect() {
+    if (this.ws) {
+      this.ws.close();
+      this.ws = null;
     }
+    this.subscribers.clear();
   }
 }
+
+export default WebSocketService;

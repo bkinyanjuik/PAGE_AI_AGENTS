@@ -26,7 +26,7 @@ const AgentCard = ({ agent }) => {
             <p>Tasks Completed: {agent.state.performance.tasksCompleted}</p>
             <p>Success Rate: {agent.state.performance.successRate}%</p>
           </div>
-
+          
           {agent.state.currentTask && (
             <div className="mt-2 p-2 bg-gray-50 rounded text-sm">
               <p className="font-medium">Current Task:</p>

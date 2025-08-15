@@ -1,47 +1,47 @@
-const WorkflowProgress = ({ workflow }) => {
-  const getProgressColor = (status) => {
-    switch (status) {
-      case 'completed': return 'bg-green-500';
-      case 'in_progress': return 'bg-blue-500';
-      case 'pending': return 'bg-gray-300';
-      case 'error': return 'bg-red-500';
-      default: return 'bg-gray-300';
-    }
-  };
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Card } from './common/Card';
+
+export const WorkflowProgress = ({ workflow }) => {
+  const progress = (workflow.completedTasks / workflow.totalTasks) * 100;
 
   return (
-    <div className="bg-white rounded-lg shadow p-4">
-      <div className="flex justify-between items-center mb-4">
-        <div>
-          <h3 className="font-medium text-gray-900">{workflow.name}</h3>
-          <p className="text-sm text-gray-500">{workflow.description}</p>
-        </div>
-        <span className="text-sm text-gray-600">
-          {workflow.completedTasks}/{workflow.totalTasks} Tasks
-        </span>
+    <Card className="p-6">
+      <h2 className="text-2xl font-bold gradient-text mb-4">{workflow.name}</h2>
+      
+      <div className="relative h-2 bg-dark-light rounded-full overflow-hidden mb-4">
+        <motion.div
+          className="absolute h-full bg-primary"
+          initial={{ width: 0 }}
+          animate={{ width: `${progress}%` }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        />
       </div>
 
       <div className="space-y-4">
         {workflow.tasks.map((task, index) => (
-          <div key={task.id} className="relative">
-            <div className="flex items-center">
-              <div className={`w-6 h-6 rounded-full ${getProgressColor(task.status)} flex items-center justify-center text-white text-sm`}>
-                {index + 1}
-              </div>
-              <div className="ml-3 flex-1">
-                <p className="text-sm font-medium text-gray-900">{task.name}</p>
-                <p className="text-sm text-gray-500">{task.agent}</p>
-              </div>
-              <span className="text-xs text-gray-500">{task.duration || '-'}</span>
+          <motion.div
+            key={task.id}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className="flex items-center gap-4"
+          >
+            <div className={`w-3 h-3 rounded-full ${
+              task.status === 'completed' ? 'bg-primary' :
+              task.status === 'in_progress' ? 'bg-warning animate-pulse' :
+              'bg-gray-600'
+            }`} />
+            <div className="flex-1">
+              <p className="font-medium">{task.name}</p>
+              <p className="text-sm text-gray-400">{task.agent}</p>
             </div>
-            {index < workflow.tasks.length - 1 && (
-              <div className="absolute left-3 top-6 bottom-0 w-px bg-gray-200"></div>
+            {task.duration && (
+              <span className="text-sm text-gray-400">{task.duration}</span>
             )}
-          </div>
+          </motion.div>
         ))}
       </div>
-    </div>
+    </Card>
   );
 };
-
-export default WorkflowProgress;
