@@ -51,7 +51,9 @@ export class WebSocketService {
   private subscribers: Set<(data: any) => void> = new Set();
 
   constructor() {
-    this.initializeWebSocket();
+    if (typeof window !== 'undefined') {
+      this.initializeWebSocket();
+    }
   }
 
   private initializeWebSocket() {
