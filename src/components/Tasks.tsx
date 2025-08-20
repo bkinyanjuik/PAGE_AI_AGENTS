@@ -18,7 +18,7 @@ const Tasks = () => {
       <h2>Tasks</h2>
       <ul>
         {tasks.map((task: any) => (
-          <li key={task.id}>{task.name}</li>
+          <li key={task.task_id}>{task.title}</li>
         ))}
       </ul>
     </div>
