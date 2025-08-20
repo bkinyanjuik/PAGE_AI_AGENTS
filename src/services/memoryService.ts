@@ -14,12 +14,17 @@ import { EmbeddingsService } from '@/services/embeddingsService';
 
 export class MemoryService {
   private static instance: MemoryService;
-  private qdrant: QdrantClient;
+  private qdrant: QdrantClient | null;
   private embeddings: EmbeddingsService;
   private shortTermMemory: ShortTermMemory;
 
   private constructor() {
-    this.qdrant = new QdrantClient({ url: MEMORY_CONFIG.vectorDbUrl });
+    try {
+      this.qdrant = new QdrantClient({ url: MEMORY_CONFIG.vectorDbUrl });
+    } catch (error) {
+      console.warn("Failed to connect to Qdrant. Memory service will be disabled.", error);
+      this.qdrant = null;
+    }
     this.embeddings = EmbeddingsService.getInstance();
     this.shortTermMemory = {
       recentTasks: new Map(),
@@ -40,6 +45,10 @@ export class MemoryService {
     type: MemoryVector['metadata']['type'],
     metadata: Partial<MemoryVector['metadata']>
   ): Promise<string> {
+    if (!this.qdrant) {
+      console.warn("Qdrant not available, skipping storeMemory.");
+      return "";
+    }
     const vector = await this.embeddings.createEmbedding(content);
     const memoryVector: MemoryVector = {
       id: uuidv4(),
@@ -67,6 +76,10 @@ export class MemoryService {
     query: string,
     options: MemoryQueryOptions = {}
   ): Promise<MemorySearchResult[]> {
+    if (!this.qdrant) {
+      console.warn("Qdrant not available, skipping searchMemory.");
+      return [];
+    }
     const queryVector = await this.embeddings.createEmbedding(query);
     const response = await this.qdrant.search(MEMORY_CONFIG.collectionName, {
       vector: queryVector,
@@ -139,6 +152,10 @@ export class MemoryService {
     Object.values(this.shortTermMemory).forEach(memory => {
       memory.delete(agentId);
     });
+
+    if (!this.qdrant) {
+      return;
+    }
 
     // Archive long-term memories for the agent
     const memories = await this.searchMemory('', {

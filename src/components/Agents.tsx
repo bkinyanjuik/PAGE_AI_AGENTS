@@ -18,7 +18,7 @@ const Agents = () => {
       <h2>Agents</h2>
       <ul>
         {agents.map((agent: any) => (
-          <li key={agent.id}>{agent.name}</li>
+          <li key={agent.id}>{agent.role.name}</li>
         ))}
       </ul>
     </div>
