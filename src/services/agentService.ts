@@ -3,17 +3,21 @@ import { RoleSpecificAgent, AgentRole, TaskInfo, TaskResult } from '@/types/agen
 import { AgentType, getModelForAgent, getFallbackModel } from '@/lib/config/modelConfig';
 import { EmailService } from '@/services/emailService';
 import { WebSocketService } from '@/utils/websocket';
+import { RunCodeTool } from '../tools/RunCodeTool';
+import { CodeExecutionParams, CodeExecutionResult } from '../types/tools';
 
 export class AgentService {
   private static instance: AgentService;
   private agents: Map<string, RoleSpecificAgent>;
   private emailService: EmailService;
   private wsService: WebSocketService;
+  private runCodeTool: RunCodeTool;
 
   private constructor() {
     this.agents = new Map();
     this.emailService = new EmailService();
     this.wsService = new WebSocketService();
+    this.runCodeTool = new RunCodeTool();
   }
 
   static getInstance(): AgentService {
@@ -40,9 +44,33 @@ export class AgentService {
           tasksCompleted: 0,
           successRate: 100,
           averageResponseTime: 0,
-          lastActive: new Date()
+          lastActive: new Date(),
+          codeExecution: {
+            totalExecutions: 0,
+            successfulExecutions: 0,
+            failedExecutions: 0,
+            averageExecutionTime: 0
+          }
         }
       },
+      // Add toolkit for tech team agents
+      toolkit: role.team === 'tech' ? {
+        runCode: async (params: CodeExecutionParams): Promise<CodeExecutionResult> => {
+          const startTime = Date.now();
+          try {
+            const result = await this.runCodeTool.run(params);
+            
+            // Update metrics
+            const executionTime = Date.now() - startTime;
+            this.updateCodeExecutionMetrics(agent, result.success, executionTime);
+            
+            return result;
+          } catch (error) {
+            this.updateCodeExecutionMetrics(agent, false, Date.now() - startTime);
+            throw error;
+          }
+        }
+      } : undefined,
       async handleTask(task: TaskInfo): Promise<TaskResult> {
         this.state.status = 'working';
         this.state.currentTask = task;
@@ -84,6 +112,27 @@ export class AgentService {
     if (role.team === 'tech') return AgentType.CODING;
     if (role.team === 'business') return AgentType.ADVISORY;
     return AgentType.GENERAL;
+  }
+
+  private updateCodeExecutionMetrics(
+    agent: RoleSpecificAgent,
+    success: boolean,
+    executionTime: number
+  ): void {
+    const metrics = agent.state.performance.codeExecution;
+    if (metrics) {
+      metrics.totalExecutions++;
+      if (success) {
+        metrics.successfulExecutions++;
+      } else {
+        metrics.failedExecutions++;
+      }
+      metrics.averageExecutionTime = (
+        (metrics.averageExecutionTime * (metrics.totalExecutions - 1) + executionTime) /
+        metrics.totalExecutions
+      );
+      metrics.lastExecutionTimestamp = new Date();
+    }
   }
 
   async notifyProgress(agent: RoleSpecificAgent, task: TaskInfo, result: TaskResult): Promise<void> {

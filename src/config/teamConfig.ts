@@ -6,7 +6,11 @@ export const TechTeamRoles: Record<string, AgentRole> = {
     name: 'Frontend Lead Developer',
     team: TeamType.TECH,
     specialization: ['frontend', 'UI/UX', 'react', 'typescript'],
-    requiredCapabilities: ['code_generation', 'code_review'],
+    requiredCapabilities: [
+      'code_generation',
+      'code_review',
+      'code_execution' // Add this line
+    ],
     githubAccess: {
       repositories: ['frontend', 'shared-components'],
       permissions: ['write', 'admin']
@@ -20,7 +24,11 @@ export const TechTeamRoles: Record<string, AgentRole> = {
     name: 'Backend Lead Developer',
     team: TeamType.TECH,
     specialization: ['backend', 'api', 'database', 'system-design'],
-    requiredCapabilities: ['code_generation', 'code_review'],
+    requiredCapabilities: [
+      'code_generation', 
+      'code_review',
+      'code_execution' // Add this line
+    ],
     githubAccess: {
       repositories: ['backend', 'api-services'],
       permissions: ['write', 'admin']
@@ -30,7 +38,11 @@ export const TechTeamRoles: Record<string, AgentRole> = {
     name: 'AI/ML Lead Developer',
     team: TeamType.TECH,
     specialization: ['machine-learning', 'deep-learning', 'model-training'],
-    requiredCapabilities: ['code_generation', 'technical_writing'],
+    requiredCapabilities: [
+      'code_generation',
+      'technical_writing',
+      'code_execution' // Add this line
+    ],
     githubAccess: {
       repositories: ['ml-models', 'data-processing'],
       permissions: ['write', 'admin']
@@ -40,7 +52,11 @@ export const TechTeamRoles: Record<string, AgentRole> = {
     name: 'DevOps Engineer',
     team: TeamType.TECH,
     specialization: ['infrastructure', 'ci-cd', 'kubernetes'],
-    requiredCapabilities: ['code_generation', 'technical_writing'],
+    requiredCapabilities: [
+      'code_generation',
+      'technical_writing',
+      'code_execution' // Add this line
+    ],
     githubAccess: {
       repositories: ['infra', 'deployment'],
       permissions: ['admin']

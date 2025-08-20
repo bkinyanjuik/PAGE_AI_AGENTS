@@ -41,6 +41,7 @@ export interface AgentMetrics {
   successRate: number;
   averageResponseTime: number;
   lastActive: Date;
+  codeExecution?: CodeExecutionMetrics; // Add this line
 }
 
 export interface TaskInfo {
@@ -96,6 +97,7 @@ export interface RoleSpecificAgent {
   model: ModelConfig;
   fallbackModel?: ModelConfig;
   state: AgentState;
+  toolkit?: AgentToolkit; // Add this line
   collaborationConfig: CollaborationConfig;
   handleTask(task: TaskInfo): Promise<TaskResult>;
   collaborate(agents: RoleSpecificAgent[]): void;
@@ -160,4 +162,18 @@ export interface AgentControlCommand {
   priority?: 'low' | 'medium' | 'high';
   metadata?: Record<string, any>;
   requiredCapabilities?: string[];
+}
+
+// Add to existing interfaces
+export interface CodeExecutionMetrics {
+  totalExecutions: number;
+  successfulExecutions: number;
+  failedExecutions: number;
+  averageExecutionTime: number;
+  lastExecutionTimestamp?: Date;
+}
+
+// Add new toolkit interface
+export interface AgentToolkit {
+  runCode: (params: CodeExecutionParams) => Promise<CodeExecutionResult>;
 }
