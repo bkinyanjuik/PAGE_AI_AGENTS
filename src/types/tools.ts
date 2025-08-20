@@ -1,3 +1,5 @@
+import { SecurityScanResult } from './security';
+
 export interface CodeExecutionParams {
   command: string;
   useDocker?: boolean;
