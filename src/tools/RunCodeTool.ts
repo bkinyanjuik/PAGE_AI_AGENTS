@@ -1,43 +1,9 @@
 import { exec } from 'child_process';
-    export class RunCodeTool {
-      async run(params: CodeExecutionParams): Promise<CodeExecutionResult> {
-        const startTime = Date.now();
-        try {
-          // Pre-execution checks
-          await this.validateDependencies(params);
-          await this.scanSecurity(params);
-
-          const result = params.useDocker ? 
-            await this.runInDocker(params) :
-            await this.runLocally(params);
-
-          // Post-execution analysis
-          const qualityMetrics = await this.analyzeCodeQuality(params);
-          const testResults = await this.runTests(params);
-
-          return {
-            ...result,
-            executionTime: Date.now() - startTime,
-            qualityMetrics,
-            testResults
-          };
-        } catch (error) {
-          return {
-            success: false,
-            output: '',
-            error: error instanceof Error ? error.message : 'Unknown error occurred',
-            executionTime: Date.now() - startTime
-          };
-        }
-      }
-    }
 import { promisify } from 'util';
 import * as path from 'path';
-import { debuggerClients } from './debugger';
 import { 
   CodeExecutionParams, 
   CodeExecutionResult, 
-  DebuggerConfig,
   TestResult,
   CodeQualityMetrics 
 } from '../types/tools';
@@ -91,18 +57,20 @@ export class RunCodeTool {
     }
   }
 
+  /*
   async debug(params: CodeExecutionParams, debugConfig: DebuggerConfig): Promise<void> {
-    const debugger = debuggerClients[params.language];
-    if (!debugger) {
+    const dbg = debuggerClients[params.language];
+    if (!dbg) {
       throw new Error(`Debugger not available for language: ${params.language}`);
     }
 
-    await debugger.attach({
+    await dbg.attach({
       ...debugConfig,
       sourcePath: params.workingDir,
       breakpoints: debugConfig.breakpoints
     });
   }
+  */
 
   private async validateDependencies(params: CodeExecutionParams): Promise<void> {
     const analysis = await this.dependencyAnalyzer.analyze(params.workingDir);
@@ -156,19 +124,22 @@ export class RunCodeTool {
   }
 
   private async runLocally(params: CodeExecutionParams): Promise<CodeExecutionResult> {
+    const startTime = Date.now();
     try {
       const { stdout, stderr } = await execAsync(params.command, { cwd: params.workingDir });
       return {
         success: !stderr,
         output: stdout,
-        error: stderr
+        error: stderr,
+        executionTime: Date.now() - startTime,
       };
     } catch (error) {
       if (error instanceof Error) {
         return {
           success: false,
           output: '',
-          error: error.message
+          error: error.message,
+          executionTime: Date.now() - startTime,
         };
       }
       throw error;
@@ -176,6 +147,7 @@ export class RunCodeTool {
   }
 
   private async runInDocker(params: CodeExecutionParams): Promise<CodeExecutionResult> {
+    const startTime = Date.now();
     const workspacePath = '/workspace';
     const dockerCommand = `docker run --rm -v "${params.workingDir}:${workspacePath}" ${this.dockerImage} bash -c "cd ${workspacePath} && ${params.command}"`;
     
@@ -184,14 +156,16 @@ export class RunCodeTool {
       return {
         success: !stderr,
         output: stdout,
-        error: stderr
+        error: stderr,
+        executionTime: Date.now() - startTime,
       };
     } catch (error) {
       if (error instanceof Error) {
         return {
           success: false,
           output: '',
-          error: error.message
+          error: error.message,
+          executionTime: Date.now() - startTime,
         };
       }
       throw error;

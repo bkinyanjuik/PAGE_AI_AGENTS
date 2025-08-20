@@ -1,18 +1,4 @@
 import { exec } from 'child_process';
-    export class DependencyAnalyzer {
-      async analyze(workingDir: string): Promise<DependencyAnalysis> {
-        const language = await this.detectLanguage(workingDir);
-        const deps = await this.getDependencies(workingDir, language);
-        const vulns = await this.checkVulnerabilities(deps, language);
-        
-        return {
-          dependencies: deps,
-          hasVulnerabilities: vulns.length > 0,
-          vulnerabilities: vulns,
-          outdatedPackages: await this.checkOutdated(workingDir, language)
-        };
-      }
-    }
 import { promisify } from 'util';
 import * as fs from 'fs/promises';
 import * as path from 'path';

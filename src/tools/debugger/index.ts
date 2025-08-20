@@ -1,3 +1,4 @@
+/*
 import { VSCodeDebugger } from './vscode';
 import { PythonDebugger } from './python';
 import { DotNetDebugger } from './dotnet';
@@ -10,3 +11,4 @@ export const debuggerClients: Record<string, DebuggerClient> = {
   nodejs: new NodeDebugger(),
   default: new VSCodeDebugger()
 };
+*/

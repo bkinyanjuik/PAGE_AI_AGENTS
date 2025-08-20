@@ -128,6 +128,12 @@ export class WebSocketService {
     }
   }
 
+  broadcast(data: { type: string, payload: any }) {
+    if (this.ws?.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify(data));
+    }
+  }
+
   broadcastTaskUpdate(task: TaskInfo) {
     if (this.ws?.readyState === WebSocket.OPEN) {
       this.ws.send(JSON.stringify({

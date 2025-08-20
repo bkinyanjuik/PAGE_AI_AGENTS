@@ -74,8 +74,11 @@ const AgentDetailPage = () => {
 
       <div className="bg-white p-6 rounded-lg shadow">
         <h2 className="text-xl font-semibold mb-4">Model Configuration</h2>
-        <p><span className="font-medium">Primary Model:</span> {agent.model}</p>
-        <p><span className="font-medium">Fallback Model:</span> {agent.fallbackModel}</p>
+        <p><span className="font-medium">Primary Model:</span> {agent.model.name}</p>
+        <p>
+          <span className="font-medium">Fallback Model:</span>{' '}
+          {agent.fallbackModel ? agent.fallbackModel.name : 'N/A'}
+        </p>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { ModelConfig, AgentType } from '../lib/config/modelConfig';
+import { CodeExecutionParams, CodeExecutionResult } from './tools';
 
 export interface BaseAgent {
   name: string;
