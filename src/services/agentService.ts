@@ -5,6 +5,10 @@ import { EmailService } from '@/services/emailService';
 import { WebSocketService } from '@/utils/websocket';
 import { RunCodeTool } from '../tools/RunCodeTool';
 import { CodeExecutionParams, CodeExecutionResult } from '../types/tools';
+import { LLMService } from './llm/LLMService';
+import { ReasoningService } from './ReasoningService';
+import { FileOperations } from '../tools/FileOperations';
+import { llmConfigs } from '../config/llmConfig';
 
 export class AgentService {
   private static instance: AgentService;
@@ -161,5 +165,42 @@ export class AgentService {
 
   getAllAgents(): RoleSpecificAgent[] {
     return Array.from(this.agents.values());
+  }
+
+  private initializeToolkit(agent: RoleSpecificAgent) {
+    const fileOps = new FileOperations(process.cwd());
+    const llmService = new LLMService(llmConfigs[agent.model.provider]);
+    const reasoningService = new ReasoningService(llmService, {
+      fileOps,
+      // Add other tools as needed
+    });
+
+    return {
+      fileOps,
+      reasoning: reasoningService
+    };
+  }
+
+  async handleTask(agent: RoleSpecificAgent, task: TaskInfo): Promise<TaskResult> {
+    const toolkit = this.initializeToolkit(agent);
+    agent.state.status = 'working';
+    agent.state.currentTask = task;
+
+    try {
+      // Use reasoning service to plan and execute the task
+      const result = await toolkit.reasoning.executeTask(task);
+
+      // Update agent metrics
+      agent.state.performance.tasksCompleted++;
+      agent.state.performance.successRate = 
+        ((agent.state.performance.successRate * (agent.state.performance.tasksCompleted - 1)) + 
+        (result.success ? 100 : 0)) / agent.state.performance.tasksCompleted;
+      
+      agent.state.status = 'idle';
+      return result;
+    } catch (error) {
+      agent.state.status = 'error';
+      throw error;
+    }
   }
 }
