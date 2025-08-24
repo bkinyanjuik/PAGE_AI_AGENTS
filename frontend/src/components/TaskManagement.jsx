@@ -94,8 +94,8 @@ const TaskManagement = () => {
             >
               <option value="">Select Agent</option>
               {agents.map(agent => (
-                <option key={agent.agent_id} value={agent.agent_id}>
-                  {agent.role} ({agent.workload} tasks)
+                <option key={agent.id} value={agent.id}>
+                  {agent.role.name}
                 </option>
               ))}
             </select>
@@ -144,7 +144,7 @@ const TaskManagement = () => {
                 </span>
               </div>
               <div className="mt-2 text-sm text-gray-600">
-                Assigned to: {agents.find(a => a.agent_id === task.assigned_to)?.role || 'Unassigned'}
+                Assigned to: {agents.find(a => a.id === task.assigned_to)?.role?.name || 'Unassigned'}
               </div>
             </div>
           ))}
